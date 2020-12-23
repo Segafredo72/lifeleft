@@ -3,6 +3,7 @@ package com.lifeleft;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import java.time.Year;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @WebService(serviceName = "LifeLeft")
@@ -27,5 +28,22 @@ public class LifeLeftService {
 
         return "Bonjour " + prenom + ", il vous reste " + anneeRestantes + " ans à vivre, profitez-en au maximum !";
     }
+    @WebMethod
+    public int creerClient(String login, String password) {
 
+        /*
+        Insérer le client dans la base de données et retourner son ID unique
+         */
+        return ThreadLocalRandom.current().nextInt(100, 900);
+    }
+
+    @WebMethod
+    public String commanderCompteARebours(Integer clientId){
+
+        /*
+        Insérer la commande dans la base de données et retourner un message de validation.
+         */
+        return "Merci ! Votre commande pour le client : "+ clientId +" de compteur de vie est validée";
+
+    }
 }
