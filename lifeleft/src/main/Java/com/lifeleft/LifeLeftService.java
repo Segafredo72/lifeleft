@@ -1,5 +1,8 @@
 package com.lifeleft;
 
+import exceptions.LifeLeftException;
+import exceptions.LifeLeftFault;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import java.time.Year;
@@ -18,7 +21,20 @@ public class LifeLeftService {
     Integer evDeReference = 0;
 
     @WebMethod
-    public String  anneeRestantesAVivre (String prenom, String sexe, Integer anneeNaissance) {
+    public String  anneeRestantesAVivre (String prenom, String sexe, Integer anneeNaissance) throws LifeLeftException {
+        //vaut mieux remplacer 2017 par Year.now().getValue(), mais pour simplifier on laisse 2017
+        if(anneeNaissance > 2020) {
+
+            //On créer une nouvelle instance de notre POJO
+            LifeLeftFault fault = new LifeLeftFault();
+
+            //On y ajoute le code d'erreur et le détail de l'erreur en question
+            fault.setFaultCode("1234");
+            fault.setFaultString("L'année reçu est supérieur l'année actuelle");
+
+            //on lance l'exception avec comme premier argument un message général sur l'erreur.
+            throw new LifeLeftException("Année invalide", fault);
+        }
 
         if(sexe.equals(homme)) evDeReference = ESPERANCE_VIE_HOMMES;
         else evDeReference = ESPERANCE_VIE_FEMMES;
